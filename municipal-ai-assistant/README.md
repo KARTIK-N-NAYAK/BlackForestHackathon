@@ -1,103 +1,94 @@
 # 🏛️ Kommunaler KI-Assistent – Energiewende
 
-Ein vollständig lokaler KI-Assistent für deutsche Kommunalverwaltungen zur Unterstützung
-bei der Energiewende und kommunalen Wärmeplanung.
+Ein vollständig lokaler KI-Assistent für kommunale Verwaltungen zur Unterstützung
+bei der Energiewende, Wärmeplanung und lokalen Dokumenten.
 
-## ✨ Funktionen
+## Was das Projekt macht
 
-| Feature | Beschreibung |
-|---|---|
-| **Chat mit Quellenangabe** | Stellt Fragen zu Gesetzen, Verträgen und Plänen – mit exakter Zitierung (Dokument, Seite, Textauszug) |
-| **„Ich weiß es nicht"** | Halluziniert nicht – fragt nach mehr Kontext wenn nötig |
-| **Wissensbasis-Dashboard** | Dokumente hochladen, anzeigen, löschen und neu indizieren |
-| **Vorlagen ausfüllen** | Excel, Word und PDF-Formulare halbautomatisch befüllen mit KI-Vorschlägen |
-| **100% lokal** | Kein Cloud-Dienst – alle Daten bleiben im Haus (DSGVO-konform) |
+- Chat mit dokumentbasierter Unterstützung
+- Dokumente lokal hochladen und indizieren
+- Vorlagen (PDF/DOCX/XLSX) analysieren und ausfüllen
+- Antworten mit Quellenangaben liefern
+- Alles lokal und DSGVO-freundlich
 
-## 🏗️ Architektur
+## Voraussetzungen
 
-```
-Frontend (React + Vite)  ←→  FastAPI Backend  ←→  Ollama (Mistral lokal)
-                                    ↓
-                               ChromaDB (lokal)
-                          (Vektordatenbank für RAG)
-```
-
-- **LLM**: Mistral 7B via [Ollama](https://ollama.com) (lokal)
-- **Embeddings**: nomic-embed-text via Ollama (lokal)
-- **RAG**: LangChain + LangGraph
-- **Vektordatenbank**: ChromaDB (persistent auf Disk)
-- **Backend**: FastAPI (Python)
-- **Frontend**: React + Vite + TypeScript
-
-## 🚀 Setup (ohne Docker)
-
-### Voraussetzungen
+- Windows
 - Python 3.11+
 - Node.js 20+
-- [Ollama](https://ollama.com/download) installiert
+- Ollama installiert
 
-### Schritt 1: Ollama & Modelle herunterladen
+## Schritt 1: Ollama vorbereiten
 
-```bash
-# Ollama starten (falls nicht als Service)
+1. Starte Ollama:
+
+```powershell
 ollama serve
-
-# In einem neuen Terminal:
-ollama pull mistral          # Chat-Modell (~4 GB)
-ollama pull nomic-embed-text # Embedding-Modell (~270 MB)
 ```
 
-### Schritt 2: Python-Umgebung & Backend
+2. Lade Modelle herunter:
 
-```bash
+```powershell
+ollama pull mistral
+ollama pull nomic-embed-text
+```
+
+## Schritt 2: Backend starten
+
+```powershell
 cd municipal-ai-assistant/backend
-
-# Virtuelle Umgebung anlegen
 python -m venv .venv
-
-# Aktivieren (Windows)
 .venv\Scripts\activate
-
-# Abhängigkeiten installieren
 pip install -r requirements.txt
-
-# Dokumente in Datenverzeichnisse kopieren (optional – beim Start automatisch indiziert)
-# backend/data/knowledge_base/     ← Wissensbasis-Dokumente (PDF, DOCX, XLSX)
-# backend/data/additional_documents/ ← Zusatzdokumente
-
-# Backend starten
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Backend läuft auf: http://localhost:8000
-API-Dokumentation: http://localhost:8000/docs
+- Backend: `http://localhost:8000`
+- API-Dokumentation: `http://localhost:8000/docs`
 
-### Schritt 3: Frontend
+## Schritt 3: Frontend starten
 
-```bash
+```powershell
 cd municipal-ai-assistant/frontend
-
 npm install
 npm run dev
 ```
 
-Frontend läuft auf: http://localhost:5173
+- Frontend: `http://localhost:5173`
 
-## 📁 Datenverzeichnisse
+## Optionale Setup-Schritte
+
+### Hackathon-Daten installieren
+
+Wenn Sie die vorhandenen Hackathon-Dokumente kopieren möchten, führen Sie im Workspace-Root aus:
+
+```powershell
+cd d:\BlackForestHackathon
+.\setup_data.ps1
+```
+
+Das Skript kopiert Dokumente in:
+- `municipal-ai-assistant/backend/data/knowledge_base`
+- `municipal-ai-assistant/backend/data/additional_documents`
+- `municipal-ai-assistant/backend/data/templates`
+
+## Verzeichnisstruktur
 
 ```
-backend/data/
-├── knowledge_base/          ← Wissensbasis (Gesetze, Verträge, Pläne)
-├── additional_documents/    ← Zusatzdokumente (Leitfäden, Entwürfe)
-├── templates/               ← Vorab-Templates (optional)
-├── uploads/                 ← Temporäre Uploads
-├── filled_templates/        ← Ausgefüllte Vorlagen (Export)
-└── chroma_db/               ← Vektordatenbank (automatisch generiert)
+municipal-ai-assistant/backend/data/
+├── knowledge_base/
+├── additional_documents/
+├── templates/
+├── uploads/
+├── filled_templates/
+└── chroma_db/
 ```
 
-## 🔧 Konfiguration
+## Konfiguration
 
-Umgebungsvariablen in `backend/.env` (optional):
+Die Backend-Konfiguration befindet sich in `municipal-ai-assistant/backend/config.py`.
+
+Optional können Sie eine Datei `municipal-ai-assistant/backend/.env` anlegen:
 
 ```env
 OLLAMA_BASE_URL=http://localhost:11434
@@ -105,35 +96,30 @@ CHAT_MODEL=mistral
 EMBEDDING_MODEL=nomic-embed-text
 ```
 
-Für bessere Deutschen-Sprachunterstützung alternativ:
-```env
-CHAT_MODEL=mistral-nemo  # Größer aber besseres Deutsch
+## Hinweise
+
+- Ollama muss vor dem Backend laufen.
+- Der Backend-Server muss auf `http://localhost:8000` erreichbar sein.
+- Unterstützte Dokumenttypen: PDF, DOCX, XLSX, XLS.
+
+## Kurzbefehle
+
+```powershell
+# Backend
+cd municipal-ai-assistant/backend
+.venv\Scripts\activate
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+# Frontend
+cd municipal-ai-assistant/frontend
+npm install
+npm run dev
 ```
 
-## 📋 Schnellstart mit Hackathon-Dokumenten
+## Support
 
-```bash
-# Windows PowerShell
-cd d:\BlackForestHackathon
-.\setup_data.ps1
-```
-
-Das Skript kopiert alle bereitgestellten Dokumente automatisch in die richtigen Verzeichnisse.
-
-## 🛡️ Datenschutz
-
-- Alle Anfragen bleiben auf dem lokalen Rechner
-- Keine Verbindungen zu externen KI-APIs
-- ChromaDB speichert Vektoren lokal auf Disk
-- Ollama läuft vollständig offline nach dem initialen Download
-
-## 🏆 Hackathon – Success Criteria
-
-| Kriterium | Umsetzung |
-|---|---|
-| Intuitive Nutzung | Einfache Web-Oberfläche, kein Training nötig |
-| Genaue & zitierbare Antworten | Jede Aussage mit Dokument + Seite + Textzitat |
-| Unsicherheiten transparent | „ICH WEISS ES NICHT" + Erklärung was fehlt |
-| Inhalt aus Nutzer-Dokumenten | Separate Kollektion für Zusatzdokumente |
-| Vorlagen ausfüllen | Halbautomatisch mit KI-Vorschlägen + manuelle Korrektur |
-| Arbeitsentlastung | Direkte Extraktion aus Dokumenten statt manuelle Recherche |
+Falls es beim Starten Probleme gibt, prüfen Sie:
+- dass Ollama läuft
+- ob die Python-Umgebung aktiviert ist
+- ob `npm install` erfolgreich war
+- ob der Browser auf `http://localhost:5173` zugreift

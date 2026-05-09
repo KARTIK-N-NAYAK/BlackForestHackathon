@@ -80,7 +80,7 @@ def get_llm() -> ChatOllama:
             temperature=config.LLM_TEMPERATURE,
             num_predict=getattr(config, 'LLM_NUM_PREDICT', 1024),
             num_ctx=4096,      # Mistral 7B sweet-spot: fast + enough context
-            repeat_penalty=1.1,
+            #repeat_penalty=1.1,
         )
     return _llm
 

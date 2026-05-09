@@ -26,3 +26,6 @@ pydantic>=2.7.0
 pydantic-settings>=2.2.0
 python-dotenv>=1.0.0
 aiofiles>=23.2.1
+
+langchain-huggingface 
+sentence-transformers

@@ -18,6 +18,7 @@ from chromadb.utils.embedding_functions import OllamaEmbeddingFunction
 from docx import Document as DocxDocument
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from openpyxl import load_workbook
+from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
 import config
 
@@ -38,9 +39,13 @@ def get_chroma_client() -> chromadb.PersistentClient:
 def get_collection(name: str) -> chromadb.Collection:
     if name not in _collections:
         client = get_chroma_client()
-        embed_fn = OllamaEmbeddingFunction(
-            model_name=config.EMBEDDING_MODEL,
-            url=f"{config.OLLAMA_BASE_URL}/api/embeddings",
+        # embed_fn = OllamaEmbeddingFunction(
+        #     model_name=config.EMBEDDING_MODEL,
+        #     url=f"{config.OLLAMA_BASE_URL}/api/embeddings",
+        # )
+
+        embed_fn = SentenceTransformerEmbeddingFunction(
+            model_name="sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
         )
         _collections[name] = client.get_or_create_collection(
             name=name,

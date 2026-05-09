@@ -24,13 +24,13 @@ for _d in [KNOWLEDGE_BASE_DIR, ADDITIONAL_DOCS_DIR, TEMPLATES_DIR,
 
 # ── Ollama / LLM ─────────────────────────────────────────────────────────────
 OLLAMA_BASE_URL   = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-CHAT_MODEL        = os.getenv("CHAT_MODEL",       "mistral")          # local Mistral
+CHAT_MODEL        = os.getenv("CHAT_MODEL",       "llama3:8b-instruct-q4_0")          # local Mistral
 EMBEDDING_MODEL   = os.getenv("EMBEDDING_MODEL",  "nomic-embed-text") # local embeddings
 
 # ── RAG / Retrieval ───────────────────────────────────────────────────────────
-CHUNK_SIZE           = 1200   # larger chunks = more context per passage
-CHUNK_OVERLAP        = 250    # generous overlap so nothing is cut at boundaries
-TOP_K_RETRIEVAL      = 6      # 6 chunks × 1200 chars fits well in 4096 ctx
+CHUNK_SIZE           = 2000   # larger chunks = more context per passage
+CHUNK_OVERLAP        = 200    # generous overlap so nothing is cut at boundaries
+TOP_K_RETRIEVAL      = 5      # 5 chunks × 1500 chars fits well in 4096 ctx
 MIN_RELEVANCE_SCORE  = 0.20   # lower threshold – let Mistral decide relevance
 LLM_TEMPERATURE      = 0.1    # tiny non-zero: avoids repetition loops
 LLM_NUM_PREDICT      = 2048   # max output tokens – prevents truncated answers

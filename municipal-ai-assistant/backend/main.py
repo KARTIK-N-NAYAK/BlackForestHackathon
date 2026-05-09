@@ -111,10 +111,9 @@ def chat(req: ChatRequest):
     if not req.question.strip():
         raise HTTPException(status_code=400, detail="Frage darf nicht leer sein.")
 
-    if req.use_agent:
-        result = run_agent(req.question)
-    else:
-        result = answer_question(req.question)
+    # Always use direct RAG for reliable, complete answers with Mistral 7B.
+    # The LangGraph agent path is kept as opt-in only (use_agent=True AND agent available).
+    result = answer_question(req.question)
 
     return ChatResponse(
         answer=result.answer,

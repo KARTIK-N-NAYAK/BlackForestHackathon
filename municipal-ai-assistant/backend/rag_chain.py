@@ -35,17 +35,19 @@ class RAGResult:
 # ── System prompt ─────────────────────────────────────────────────────────────
 
 SYSTEM_PROMPT = """\
-Du bist ein spezialisierter KI-Assistent für deutsche Kommunalverwaltungen im \
-Bereich Energiewende und kommunale Wärmeplanung.
+Du bist ein spezialisierter KI-Assistent für deutsche Kommunalverwaltungen im Bereich
+Energiewende und kommunale Wärmeplanung. Du hilfst Sachbearbeitern, Gesetze, Verträge
+und Pläne schnell zu verstehen und Informationen daraus zu extrahieren.
 
-WICHTIGE REGELN – HALTE SIE IMMER EIN:
-1. Beantworte Fragen AUSSCHLIESSLICH auf Basis der bereitgestellten Dokumentenauszüge.
-2. Erfinde KEINE Informationen, die nicht in den Auszügen stehen.
-3. Wenn du die Antwort nicht aus den Dokumenten ableiten kannst, antworte mit:
-   "ICH WEISS ES NICHT" und erkläre kurz, welche zusätzlichen Informationen hilfreich wären.
-4. Zitiere bei jeder Aussage die genaue Quelle: Dokumentenname und Seite.
-5. Antworte immer auf Deutsch.
-6. Trenne eigene Zusammenfassungen klar von direkten Zitaten (direkte Zitate in Anführungszeichen).
+REGELN:
+1. Beantworte die Frage so VOLLSTÄNDIG und DETAILLIERT wie möglich auf Basis der Dokumentenauszüge.
+2. Fasse alle relevanten Informationen aus ALLEN bereitgestellten Auszügen zusammen – übersieht nichts.
+3. Zitiere nach jeder wichtigen Aussage die Quelle in Klammern: (Dokumentname, Seite X).
+4. Strukturiere lange Antworten mit Aufzählungen oder Abschnitten.
+5. Nur wenn die Antwort wirklich nicht in den Auszügen steht: Schreibe „ICH WEISS ES NICHT“
+   und erkläre genau, welche zusätzlichen Informationen fehlen.
+6. Antworte IMMER auf Deutsch.
+7. Direkte Zitate aus den Dokumenten in Anführungszeichen.
 """
 
 HUMAN_TEMPLATE = """\
@@ -55,12 +57,12 @@ Folgende Dokumentenauszüge stehen zur Verfügung:
 
 ---
 
-Frage: {question}
+Frage des Nutzers: {question}
 
-Bitte beantworte die Frage ausschließlich auf Basis der obigen Auszüge. \
-Zitiere für jede wichtige Aussage die Quelle (Dokumentenname, Seite). \
-Wenn die Antwort nicht aus den Auszügen hervorgeht, schreibe "ICH WEISS ES NICHT" \
-und erkläre, welche Informationen fehlen.
+Aufgabe: Lies alle Auszüge sorgfältig durch und beantworte die Frage vollständig und strukturiert.
+Nutze alle relevanten Informationen aus den Auszügen. Gib nach jeder Aussage die Quelle an
+(Dokumentname, Seite). Wenn du dir bei einzelnen Punkten unsicher bist, kennzeichne dies.
+Nur wenn KEINE der Fragen aus den Auszügen beantwortet werden kann: Schreibe "ICH WEISS ES NICHT".
 """
 
 
@@ -76,6 +78,9 @@ def get_llm() -> ChatOllama:
             model=config.CHAT_MODEL,
             base_url=config.OLLAMA_BASE_URL,
             temperature=config.LLM_TEMPERATURE,
+            num_predict=getattr(config, 'LLM_NUM_PREDICT', 1024),
+            num_ctx=4096,      # Mistral 7B sweet-spot: fast + enough context
+            repeat_penalty=1.1,
         )
     return _llm
 
@@ -154,13 +159,15 @@ def answer_question(question: str) -> RAGResult:
         src  = meta.get("source_file", "Unbekannt")
         page = meta.get("page", "?")
         context_parts.append(
-            f"[{i}] Quelle: {src}, Seite {page}\n{doc}"
+            f"[Auszug {i}] Quelle: {src}, Seite {page}\n"
+            f"{'-'*60}\n"
+            f"{doc}\n"
         )
         citations.append(Citation(
             source_file=src,
             page=str(page),
             chunk_index=int(meta.get("chunk_index", 0)),
-            excerpt=doc[:300],
+            excerpt=doc[:500],   # show more in the UI
             relevance_score=round(sim, 3),
         ))
 

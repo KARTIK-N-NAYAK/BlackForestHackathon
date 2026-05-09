@@ -28,11 +28,12 @@ CHAT_MODEL        = os.getenv("CHAT_MODEL",       "mistral")          # local Mi
 EMBEDDING_MODEL   = os.getenv("EMBEDDING_MODEL",  "nomic-embed-text") # local embeddings
 
 # ── RAG / Retrieval ───────────────────────────────────────────────────────────
-CHUNK_SIZE           = 800    # characters per chunk
-CHUNK_OVERLAP        = 150
-TOP_K_RETRIEVAL      = 6      # chunks retrieved per query
-MIN_RELEVANCE_SCORE  = 0.30   # below this → "Ich weiß es nicht"
-LLM_TEMPERATURE      = 0.0    # deterministic – anti-hallucination
+CHUNK_SIZE           = 1200   # larger chunks = more context per passage
+CHUNK_OVERLAP        = 250    # generous overlap so nothing is cut at boundaries
+TOP_K_RETRIEVAL      = 6      # 6 chunks × 1200 chars fits well in 4096 ctx
+MIN_RELEVANCE_SCORE  = 0.20   # lower threshold – let Mistral decide relevance
+LLM_TEMPERATURE      = 0.1    # tiny non-zero: avoids repetition loops
+LLM_NUM_PREDICT      = 2048   # max output tokens – prevents truncated answers
 
 # ── ChromaDB collection names ─────────────────────────────────────────────────
 COLLECTION_KB    = "knowledge_base"

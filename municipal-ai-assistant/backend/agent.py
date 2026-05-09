@@ -169,8 +169,20 @@ def run_agent(question: str) -> RAGResult:
             "rag_result": None,
         }
         final_state = agent.invoke(initial_state)
-        last_msg = final_state["messages"][-1]
-        answer_text = last_msg.content if hasattr(last_msg, "content") else str(last_msg)
+
+        # Find the last AIMessage that has real text content (not just tool_calls)
+        answer_text = ""
+        for msg in reversed(final_state["messages"]):
+            if isinstance(msg, AIMessage):
+                content = msg.content if isinstance(msg.content, str) else ""
+                # Skip messages that are purely tool-call dispatches (empty content or only JSON)
+                if content and not _is_tool_call_only(content):
+                    answer_text = content.strip()
+                    break
+
+        # If we still have nothing useful, fall back to simple RAG
+        if not answer_text or _is_tool_call_only(answer_text):
+            return answer_question(question)
 
         is_uncertain = "ICH WEISS ES NICHT" in answer_text.upper()
 
@@ -192,6 +204,17 @@ def run_agent(question: str) -> RAGResult:
     except Exception as exc:
         # Fallback to simple RAG
         return answer_question(question)
+
+
+def _is_tool_call_only(text: str) -> bool:
+    """Return True if the text is just a raw tool-call JSON blob, not a real answer."""
+    stripped = text.strip()
+    # Detect patterns like [{"name": "search_knowledge_base", ...}]
+    if stripped.startswith('[{') and '"name"' in stripped and '"arguments"' in stripped:
+        return True
+    if stripped.startswith('{"name"') and '"arguments"' in stripped:
+        return True
+    return False
 
 
 def _parse_tool_citations(tool_output: str, citations: list[Citation]) -> None:

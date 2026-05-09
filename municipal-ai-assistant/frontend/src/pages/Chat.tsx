@@ -69,16 +69,17 @@ export default function Chat() {
         })
       );
       // Mark done/error
-      let pendingIdx = 0;
-      setAttachments(prev =>
-        prev.map(a => {
+      setAttachments(prev => {
+        let pendingIdx = 0; // Move it INSIDE the updater function so it resets on every run
+        return prev.map(a => {
           if (a.status === 'uploading') {
             const r = uploadResults[pendingIdx++];
-            return { ...a, status: r.success ? 'done' : 'error' };
+            // Added optional chaining (r?.success) as an extra safety measure
+            return { ...a, status: r?.success ? 'done' : 'error' }; 
           }
           return a;
-        })
-      );
+        });
+      });
       const doneCount = uploadResults.filter(r => r.success).length;
       if (doneCount > 0) {
         setUploadNotice(`${doneCount} Dokument(e) hochgeladen und indiziert.`);

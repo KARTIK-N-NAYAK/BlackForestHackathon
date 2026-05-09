@@ -1,4 +1,4 @@
-# 🏛️ Kommunaler KI-Assistent – Energiewende
+# 🏛️ Nova KI-Assistent – Energiewende
 
 Ein vollständig lokaler KI-Assistent für kommunale Verwaltungen zur Unterstützung
 bei der Energiewende, Wärmeplanung und lokalen Dokumenten.

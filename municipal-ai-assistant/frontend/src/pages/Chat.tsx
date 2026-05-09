@@ -22,7 +22,7 @@ export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'ai',
-      text: 'Guten Tag! Ich bin Ihr kommunaler KI-Assistent für Fragen zur Energiewende und Wärmeplanung. Stellen Sie mir eine Frage zu Ihren Dokumenten.',
+      text: 'Guten Tag! Ich bin Ihr Nova KI-Assistent für Fragen zur Energiewende und Wärmeplanung. Stellen Sie mir eine Frage zu Ihren Dokumenten.',
     },
   ]);
   const [input, setInput] = useState('');

@@ -8,13 +8,13 @@ import "./index.css";
 type Page = "chat" | "dashboard" | "templates";
 
 const NAV = [
-  { id: "chat" as Page,       label: "KI-Assistent",        icon: MessageSquare   },
+  { id: "chat" as Page,       label: "Chat",        icon: MessageSquare   },
   { id: "dashboard" as Page,  label: "Wissensbasis",         icon: Database        },
   { id: "templates" as Page,  label: "Vorlagen ausfüllen",   icon: FileSpreadsheet },
 ];
 
 const PAGE_TITLES: Record<Page, string> = {
-  chat:      "KI-Assistent – Energiewende",
+  chat:      "Nova - Assistent",
   dashboard: "Wissensbasis verwalten",
   templates: "Vorlagen ausfüllen",
 };
@@ -25,7 +25,7 @@ export default function App() {
     <div className="layout">
       <nav className="sidebar">
         <div className="sidebar-logo">
-          <h1>🏛️ Kommunaler KI-Assistent</h1>
+          <h1>🏛️ Nova KI-Assistent</h1>
           <p>Energiewende &amp; Wärmeplanung</p>
         </div>
         <div className="sidebar-nav">
@@ -37,7 +37,7 @@ export default function App() {
           ))}
         </div>
         <div className="sidebar-footer">
-          <Shield size={11} style={{ display: "inline", marginRight: 4 }} />
+          <Shield size={30} /*style={{ display: "inline", marginRight: 4 }}*/ />
           <span>Lokal &amp; DSGVO-konform</span><br />
           Keine Daten verlassen Ihr System
         </div>
@@ -46,7 +46,7 @@ export default function App() {
         <div className="topbar">
           <h2>{PAGE_TITLES[page]}</h2>
           <span className="badge badge-green">● Lokal</span>
-          <span className="badge badge-blue">Mistral (Ollama)</span>
+          <span className="badge badge-green">● Mistral</span>
         </div>
         {page === "chat"      && <Chat />}
         {page === "dashboard" && <Dashboard />}

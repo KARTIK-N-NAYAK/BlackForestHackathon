@@ -23,8 +23,8 @@ for _d in [KNOWLEDGE_BASE_DIR, ADDITIONAL_DOCS_DIR, TEMPLATES_DIR,
     _d.mkdir(parents=True, exist_ok=True)
 
 # ── Ollama / LLM ─────────────────────────────────────────────────────────────
-OLLAMA_BASE_URL   = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-CHAT_MODEL        = os.getenv("CHAT_MODEL",       "llama3:8b-instruct-q4_0")          # local Mistral
+OLLAMA_BASE_URL   = os.getenv("OLLAMA_BASE_URL", "http://localhost:8080") #http://localhost:11434 
+CHAT_MODEL        = os.getenv("CHAT_MODEL",       "mixtral")   #llama3:8b-instruct-q4_0       # local Mistral
 EMBEDDING_MODEL   = os.getenv("EMBEDDING_MODEL",  "nomic-embed-text") # local embeddings
 
 # ── RAG / Retrieval ───────────────────────────────────────────────────────────

@@ -24,8 +24,8 @@ for _d in [KNOWLEDGE_BASE_DIR, ADDITIONAL_DOCS_DIR, TEMPLATES_DIR,
 
 # ── Ollama / LLM ─────────────────────────────────────────────────────────────
 OLLAMA_BASE_URL   = os.getenv("OLLAMA_BASE_URL", "http://localhost:8080") #http://localhost:11434 
-CHAT_MODEL        = os.getenv("CHAT_MODEL",       "mixtral")   #llama3:8b-instruct-q4_0       # local Mistral
-EMBEDDING_MODEL   = os.getenv("EMBEDDING_MODEL",  "nomic-embed-text") # local embeddings
+CHAT_MODEL        = os.getenv("CHAT_MODEL",       "mistral-large:123b")   #llama3:8b-instruct-q4_0       # local Mistral
+EMBEDDING_MODEL   = os.getenv("EMBEDDING_MODEL",  "sentence-transformers/paraphrase-multilingual-mpnet-base-v2") # local embeddings
 
 # ── RAG / Retrieval ───────────────────────────────────────────────────────────
 CHUNK_SIZE           = 2000   # larger chunks = more context per passage

@@ -124,3 +124,150 @@ html, body, #root { height: 100%; font-family: "Inter", sans-serif; font-size: 1
 .msg-bubble p:last-child { margin-bottom: 0; }
 .msg-bubble strong { font-weight: 600; }
 .msg-bubble ul, .msg-bubble ol { padding-left: 18px; margin: 4px 0; }
+
+
+/* ── Municipality Selector in Sidebar ───────────────────────────────────────── */
+.municipality-section {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--neutral-200);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.municipality-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.municipality-select {
+  background: #fff;
+  border: 1px solid var(--neutral-300);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: border-color 0.15s;
+}
+
+.municipality-select:hover {
+  border-color: var(--primary);
+}
+
+.municipality-select-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.municipality-dropdown {
+  background: #fff;
+  border: 1px solid var(--neutral-200);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin-top: -4px;
+}
+
+.municipality-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.municipality-option:hover {
+  background: var(--neutral-50);
+}
+
+.municipality-option.active {
+  background: #eff6ff;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.municipality-option-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.municipality-delete-btn {
+  background: none;
+  border: none;
+  color: var(--neutral-400);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.municipality-delete-btn:hover {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+.municipality-create-form {
+  padding: 8px;
+  background: var(--neutral-50);
+  border-top: 1px solid var(--neutral-200);
+}
+
+.municipality-input {
+  width: 100%;
+  border: 1px solid var(--neutral-300);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.municipality-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.municipality-add-btn {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background: var(--neutral-50);
+  border-top: 1px solid var(--neutral-200);
+  transition: background 0.15s;
+}
+
+.municipality-add-btn:hover {
+  background: var(--neutral-100);
+}
+
+.municipality-msg {
+  font-size: 11px;
+  color: var(--success);
+  margin-top: 4px;
+  font-weight: 500;
+  text-align: center;
+}

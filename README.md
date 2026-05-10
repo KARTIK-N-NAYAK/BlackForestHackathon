@@ -102,14 +102,15 @@ Frontend App: http://localhost:5173
 Backend configuration is managed in municipal-ai-assistant/backend/config.py.
 
 Optionally, you can create a .env file in the municipal-ai-assistant/backend/ directory to override defaults:
-
+```powershell
 OLLAMA_BASE_URL=http://localhost:11434
 CHAT_MODEL=mistral
 EMBEDDING_MODEL=nomic-embed-text
-
+```
 
 ### Repository Structure
 
+```powershell
 BlackForestHackathon
  |- municipal-ai-assistant/
  |  |- backend/
@@ -126,6 +127,7 @@ BlackForestHackathon
  |  |  |- vite.config.ts
  |- setup_data.ps1     # Data initialization script
  |- README.md
+```
 
 
  ### Troubleshooting
